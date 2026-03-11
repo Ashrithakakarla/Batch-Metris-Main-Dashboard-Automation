@@ -311,6 +311,10 @@ def run_projects_view():
 
         write_sheet(SHEET_PROJECTS_MAIN, "Projects_view", screened_df_1)
 
+        screened_df = concatenated_df[concatenated_df['User ID'].isin(df3['user_id'])]
+        screened_df = screened_df.rename(columns={'User ID': 'user_id'})
+        concatenated_df = pd.merge(screened_df, df3, on='user_id')
+
         # Also update Projects-1 (full concatenated with datetime cols)
         concatenated_df['Submission Time'] = pd.to_datetime(concatenated_df['Submission Time'])
         concatenated_df['latest_feedback_given_time'] = pd.to_datetime(concatenated_df['latest_feedback_given_time'])
