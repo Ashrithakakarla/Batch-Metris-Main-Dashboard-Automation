@@ -321,6 +321,22 @@ def run_projects_view():
         concatenated_df['Submission Time'] = pd.to_datetime(concatenated_df['Submission Time'])
         concatenated_df['latest_feedback_given_time'] = pd.to_datetime(concatenated_df['latest_feedback_given_time'])
         concatenated_df['project_deadline_date'] = pd.to_datetime(concatenated_df['project_deadline_date'])
+
+        def get_re_evaluation_flag(row):
+            submission_time = row['Submission Time']
+            latest_feedback = row['latest_feedback_given_time']
+            submission_status = row['Submission Status']
+            marks_obtained = row['marks_obtained']
+        
+            if pd.notna(submission_time) and pd.notna(latest_feedback) and submission_time > latest_feedback:
+                return 1
+            elif pd.notna(submission_time) and pd.isna(latest_feedback) and submission_status == 'Submitted' and marks_obtained == 0:
+                return 2
+            else:
+                return 0
+        
+        concatenated_df['re_evaluation_flag'] = concatenated_df.apply(get_re_evaluation_flag, axis=1)
+
         write_sheet(SHEET_PROJECTS_MAIN, "Projects-1", concatenated_df)
         
     except Exception as e:
