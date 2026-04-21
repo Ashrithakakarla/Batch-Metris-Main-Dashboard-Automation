@@ -217,7 +217,7 @@ def run_nps():
             '2025 25 Jan', '2025 26 Feb', '2025 27 March', '2025 28 April',
             '2025 29 May', '2025 30 June', '2025 31 July', '2025 32 August',
             '2025 33 September', '2025 34 October', '2025 35 November',
-            '2025 36 December', '2026 37 January', '2026 38 Febraury','Agentic AI','2026 39 March'
+            '2025 36 December', '2026 37 January', '2026 38 Febraury','Agentic AI','2026 39 March','2026 40 April'
         ]
         df = df[df['admin_unit_name'].isin(batches_to_retain)]
         df['form_fill_date'] = pd.to_datetime(df['form_fill_date'])
