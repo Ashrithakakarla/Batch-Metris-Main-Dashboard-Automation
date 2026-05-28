@@ -325,10 +325,10 @@ def run_projects_view():
         concatenated_df['latest_feedback_given_time'] = pd.to_datetime(concatenated_df['latest_feedback_given_time'])
         concatenated_df['project_deadline_date'] = pd.to_datetime(concatenated_df['project_deadline_date'])
 
-        # Also update Projects-1 (full concatenated with datetime cols)
-        concatenated_df['Submission Time'] = pd.to_datetime(concatenated_df['Submission Time'], utc=True).dt.tz_convert('Asia/Kolkata')
-        concatenated_df['latest_feedback_given_time'] = pd.to_datetime(concatenated_df['latest_feedback_given_time'], utc=True).dt.tz_convert('Asia/Kolkata')
-        concatenated_df['project_deadline_date'] = pd.to_datetime(concatenated_df['project_deadline_date'], utc=True).dt.tz_convert('Asia/Kolkata')
+        # # Also update Projects-1 (full concatenated with datetime cols)
+        # concatenated_df['Submission Time'] = pd.to_datetime(concatenated_df['Submission Time'], utc=True).dt.tz_convert('Asia/Kolkata')
+        # concatenated_df['latest_feedback_given_time'] = pd.to_datetime(concatenated_df['latest_feedback_given_time'], utc=True).dt.tz_convert('Asia/Kolkata')
+        # concatenated_df['project_deadline_date'] = pd.to_datetime(concatenated_df['project_deadline_date'], utc=True).dt.tz_convert('Asia/Kolkata')
 
         def get_re_evaluation_flag(row):
             submission_time = row['Submission Time']
