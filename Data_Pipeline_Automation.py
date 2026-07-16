@@ -304,7 +304,7 @@ def run_projects_view():
 
         df1 = pd.DataFrame(data1)
         df2 = pd.DataFrame(data2)
-        df3 = pd.DataFrame(data3)[['user_id', 'au_batch_name', 'label']]
+        df3 = pd.DataFrame(data3)[['user_id', 'au_batch_name', 'label','au_start_date']]
         
         print(f"📊 df1: {len(df1)}, df2: {len(df2)}, df3: {len(df3)}")
 
