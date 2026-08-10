@@ -207,7 +207,11 @@ def apply_month_replacements(series):
     """Apply month name replacements to a pandas Series"""
     def replace_month(match):
         return MONTH_REPLACEMENTS.get(match.group(0), match.group(0))
-    pattern = '|'.join(map(re.escape, MONTH_REPLACEMENTS.keys()))
+    # Sort keys longest-first so specific batch names (e.g. 'Agentic AI AU - March 2026')
+    # match before their shorter prefixes (e.g. 'Agentic AI AU'). Regex alternation is
+    # leftmost-match, not longest-match, so without this the prefix wins and truncates
+    # the value, causing it to be dropped by the batches_to_retain filter.
+    pattern = '|'.join(sorted(map(re.escape, MONTH_REPLACEMENTS.keys()), key=len, reverse=True))
     return series.str.replace(pattern, replace_month, regex=True)
 
 # -------------------- SECTION 1: NPS --------------------
@@ -218,6 +222,7 @@ def run_nps():
         r = mb_post('https://metabase-lierhfgoeiwhr.newtonschool.co/api/card/9452/query/json')
         data = validate_response(r, '9452')
         if not data:
+            print("⚠️ Card 9452 returned NO data — skipping write. Check the card in Metabase.")
             return
         
         df = pd.DataFrame(data)
@@ -235,6 +240,11 @@ def run_nps():
             'Agentic AI AU - June 2026','Agentic AI Generalist AU - June 2026', 'Agentic AI AU - July 2026','Agentic AI AU - August 2026',
             'Agentic AI - Generalist AU - Aug 2026','Agentic AI AU - September 2026'
         ]
+
+        # --- OPTIONAL DIAGNOSTIC: batch names present in data but missing from retain list ---
+        # unmatched = set(df['admin_unit_name'].dropna().unique()) - set(batches_to_retain)
+        # print("Batches present but NOT in retain list:", sorted(unmatched))
+
         df = df[df['admin_unit_name'].isin(batches_to_retain)]
         df['form_fill_date'] = pd.to_datetime(df['form_fill_date'])
 
